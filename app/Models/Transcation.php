@@ -6,9 +6,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use BaoPham\DynamoDb\DynamoDbModel;
 
 
-class Fuelscan extends DynamoDbModel
+class Transaction extends DynamoDbModel
 {
     use HasFactory;
 
-    protected $table = 'fuelscan';
+    protected $table = 'transactions';
 }

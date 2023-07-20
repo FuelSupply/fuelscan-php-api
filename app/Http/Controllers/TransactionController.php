@@ -5,21 +5,19 @@ namespace App\Http\Controllers;
 use BaoPham\DynamoDb\RawDynamoDbQuery;
 
 
-class HeaderController extends Controller
+class TransactionController extends Controller
 {
     public function Index()
     {
-
-        $blocks = \App\Models\Block::decorate(function (RawDynamoDbQuery $raw) {
+        $tx = \App\Models\Transaction::decorate(function (RawDynamoDbQuery $raw) {
             $raw->op = "Query";
             $raw->query['ScanIndexForward'] = false;
             $raw->query['KeyConditionExpression'] = 'table_type = :table_type';
             $raw->query['ExpressionAttributeValues'] = [
-                ':table_type' => ['S' => 'blocks']
+                ':table_type' => ['S' => 'transactions']
             ];
-
         })->limit(10)->get();
 
-        return response()->json($blocks);
+        return response()->json($tx);
     }
 }

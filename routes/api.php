@@ -15,3 +15,4 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/blocks', 'App\Http\Controllers\HeaderController@Index');
+Route::get('/transaction', 'App\Http\Controllers\TransactionController@Index');
