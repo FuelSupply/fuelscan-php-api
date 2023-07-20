@@ -9,15 +9,20 @@ class TransactionController extends Controller
 {
     public function Index()
     {
-        $tx = \App\Models\Transaction::decorate(function (RawDynamoDbQuery $raw) {
+        $txs = \App\Models\Transaction::decorate(function (RawDynamoDbQuery $raw) {
             $raw->op = "Query";
             $raw->query['ScanIndexForward'] = false;
             $raw->query['KeyConditionExpression'] = 'table_type = :table_type';
             $raw->query['ExpressionAttributeValues'] = [
-                ':table_type' => ['S' => 'transactions']
+                ':table_type' => ['S' => 'transactions'],
             ];
         })->limit(10)->get();
 
-        return response()->json($tx);
+        foreach ($txs as &$tx) {
+            $tx->status = json_decode($tx->status, true);
+            $tx->input = json_decode($tx->input, true);
+            $tx->output = json_decode($tx->output, true);
+        }
+        return response()->json($txs);
     }
 }
