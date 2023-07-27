@@ -12,6 +12,11 @@ class Block extends DynamoDbModel
 
     protected $table = 'blocks';
 
-    protected $compositeKey = ['type', 'height'];
+    protected $dynamoDbIndexKeys = [
+        'block-hash-index' => [
+            'hash' => 'block_hash',
+        ],
+    ];
 
+    protected $compositeKey = ['table_type', 'height'];
 }
