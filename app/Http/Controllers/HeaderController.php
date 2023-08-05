@@ -9,42 +9,26 @@ class HeaderController extends Controller
 {
     public function Index()
     {
-
-        $blocks = \App\Models\Block::decorate(function (RawDynamoDbQuery $raw) {
-            $raw->op = "Query";
-            $raw->query['ScanIndexForward'] = false;
-            $raw->query['KeyConditionExpression'] = 'table_type = :table_type';
-            $raw->query['ExpressionAttributeValues'] = [
-                ':table_type' => ['S' => 'blocks']
-            ];
-        })->limit(10)->get();
-
+        $blocks = \App\Models\Block::orderby("height","desc")->limit(10)->get();
         return response()->json($blocks);
     }
 
-    public function BlockWithTx($hash)
+    public function Detail($hash)
     {
-//        $query = $model->where('count', 10)->limit(2);
-//        $items = $query->all();
-//        $last = $items->last();
-//        $block = \App\Models\Block::decorate(function (RawDynamoDbQuery $raw) use ($hash) {
-//            $raw->op = "Query";
-//            $raw->query['KeyConditionExpression'] = 'table_type = :table_type';
-//            $raw->query['ExpressionAttributeValues'] = [
-//                ':table_type' => ['S' => 'blocks']
-//            ];
-//        })->firstOrFail();
+        $block = \App\Models\Block::where("id",$hash)->first();
+        if (empty($block)) {
+            $block = \App\Models\Block::where("height",$hash)->first();
+        }
 
-        $block = \App\Models\Block::where("block_hash",$hash)->withindex("block-hash-index")->firstOrFail();
+        if (empty($block)) {
+            return response()->json(["error"=>"Block not found"],404);
+        }
 
-//        $block = \App\Models\Block::where('hash', $hash)->firstOrFail();
-//        $txs = \App\Models\Transaction::where('block_hash', $hash)->get();
-//        foreach ($txs as &$tx) {
-//            $tx->status = json_decode($tx->status, true);
-//            $tx->input = json_decode($tx->input, true);
-//            $tx->output = json_decode($tx->output, true);
-//        }
-//        $block->txs= $txs;
+        $block->transactions = \App\Models\Transaction::where("block_hash",$block->id)->get();
+        foreach ($block->transactions as &$tx) {
+            $tx->input = json_decode($tx->input, true, 512, JSON_THROW_ON_ERROR);
+            $tx->output = json_decode($tx->output, true, 512, JSON_THROW_ON_ERROR);
+        }
 
         return response()->json($block);
     }

@@ -1,13 +1,15 @@
 <?php
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use BaoPham\DynamoDb\DynamoDbModel;
+use Illuminate\Database\Eloquent\Model;
 
-
-class Transaction extends DynamoDbModel
+class Transaction extends Model
 {
     use HasFactory;
 
-    protected $table = 'transactions';
+    public $incrementing = false;
+    //there are a typo in the table name
+    public $table = "transctions";
 }

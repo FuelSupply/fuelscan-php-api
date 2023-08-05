@@ -9,20 +9,19 @@ class TransactionController extends Controller
 {
     public function Index()
     {
-        $txs = \App\Models\Transaction::decorate(function (RawDynamoDbQuery $raw) {
-            $raw->op = "Query";
-            $raw->query['ScanIndexForward'] = false;
-            $raw->query['KeyConditionExpression'] = 'table_type = :table_type';
-            $raw->query['ExpressionAttributeValues'] = [
-                ':table_type' => ['S' => 'transactions'],
-            ];
-        })->limit(10)->get();
-
+        $txs = \App\Models\Transaction::orderby("height","desc")->limit(10)->get();
         foreach ($txs as &$tx) {
-            $tx->status = json_decode($tx->status, true);
             $tx->input = json_decode($tx->input, true);
             $tx->output = json_decode($tx->output, true);
         }
         return response()->json($txs);
+    }
+
+    public function Detail($hash)
+    {
+        $tx = \App\Models\Transaction::where("id",$hash)->first();
+        $tx->input = json_decode($tx->input, true);
+        $tx->output = json_decode($tx->output, true);
+        return response()->json($tx);
     }
 }

@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/blocks', 'App\Http\Controllers\HeaderController@Index');
-Route::get('/block/{hash}', 'App\Http\Controllers\HeaderController@BlockWithTx');
-Route::get('/transactions', 'App\Http\Controllers\TransactionController@Index');
+Route::get('/block', 'App\Http\Controllers\HeaderController@Index');
+Route::get('/block/{hash}', 'App\Http\Controllers\HeaderController@Detail');
+Route::get('/transaction', 'App\Http\Controllers\TransactionController@Index');
 Route::get('/transaction/{hash}', 'App\Http\Controllers\TransactionController@Transaction');

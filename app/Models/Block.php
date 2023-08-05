@@ -3,20 +3,11 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use BaoPham\DynamoDb\DynamoDbModel;
+use Illuminate\Database\Eloquent\Model;
 
-
-class Block extends DynamoDbModel
+class Block extends Model
 {
     use HasFactory;
 
-    protected $table = 'blocks';
-
-    protected $dynamoDbIndexKeys = [
-        'block-hash-index' => [
-            'hash' => 'block_hash',
-        ],
-    ];
-
-    protected $compositeKey = ['table_type', 'height'];
+    public $incrementing = false;
 }
