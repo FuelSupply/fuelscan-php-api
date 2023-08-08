@@ -14,6 +14,7 @@ class TransactionController extends Controller
             $tx->input = json_decode($tx->input, true);
             $tx->output = json_decode($tx->output, true);
         }
+
         return response()->json($txs);
     }
 
