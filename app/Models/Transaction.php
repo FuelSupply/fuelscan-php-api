@@ -11,5 +11,5 @@ class Transaction extends Model
 
     public $incrementing = false;
     //there are a typo in the table name
-    public $table = "transctions";
+    public $table = "transactions";
 }
