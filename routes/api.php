@@ -1,6 +1,6 @@
 <?php
 
-use Illuminate\Http\Request;
+
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('/overview', 'App\Http\Controllers\IndexController@Index');
 Route::get('/block', 'App\Http\Controllers\HeaderController@Index');
 Route::get('/block/{hash}', 'App\Http\Controllers\HeaderController@Detail');
 Route::get('/transaction', 'App\Http\Controllers\TransactionController@Index');
