@@ -6,7 +6,6 @@ class TransactionController extends Controller
 {
     public function Index()
     {
-
         $limit = request()->get("limit", 10);
         if ($limit > 50) {
             $limit = 50;
