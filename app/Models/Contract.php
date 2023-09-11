@@ -10,4 +10,6 @@ class Contract extends Model
     use HasFactory;
 
     public $incrementing = false;
+
+    public $table = 'smart_contracts';
 }

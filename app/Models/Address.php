@@ -10,4 +10,6 @@ class Address extends Model
     use HasFactory;
 
     public $incrementing = false;
+
+    public $table = 'accounts';
 }
